@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>theFitted Integration Estimator</title>
+<style>
+:root{--bg:#f4f5f7;--card:#ffffff;--text:#17191d;--muted:#666e7b;--label:#414754;--sub:#303642;--line:#e3e6eb;--field:#d6dae1;--accent:#111827;--on-accent:#ffffff;--accent-muted:#c9d0db;--soft:#f6f7f9;--pill:#eceff3;--pill-text:#525a67;--ok-bg:#e4f4e9;--ok:#1b6237;--dev-bg:#fbeedb;--dev:#8f5310;--warn-bg:#fbf4e8;--warn-line:#eddbb9;--warn:#71460a;--radius:16px;--shadow:0 8px 24px rgba(17,24,39,.06)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101216;--card:#181b21;--text:#eceef2;--muted:#9aa2ae;--label:#c3c8d1;--sub:#d7dbe2;--line:#2a2f37;--field:#3a404a;--accent:#e8eaf0;--on-accent:#111318;--accent-muted:#5c6470;--soft:#1f232a;--pill:#262b33;--pill-text:#b3bac5;--ok-bg:#173524;--ok:#7fd49a;--dev-bg:#3a2a12;--dev:#f0b45c;--warn-bg:#2b2416;--warn-line:#4d3d1c;--warn:#f1c778;--shadow:0 8px 24px rgba(0,0,0,.35)}}
+:root[data-theme="dark"]{--bg:#101216;--card:#181b21;--text:#eceef2;--muted:#9aa2ae;--label:#c3c8d1;--sub:#d7dbe2;--line:#2a2f37;--field:#3a404a;--accent:#e8eaf0;--on-accent:#111318;--accent-muted:#5c6470;--soft:#1f232a;--pill:#262b33;--pill-text:#b3bac5;--ok-bg:#173524;--ok:#7fd49a;--dev-bg:#3a2a12;--dev:#f0b45c;--warn-bg:#2b2416;--warn-line:#4d3d1c;--warn:#f1c778;--shadow:0 8px 24px rgba(0,0,0,.35)}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+.wrap{max-width:1180px;margin:auto;padding-block:34px 60px;padding-inline:20px}.hero{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;margin-bottom:22px}.hero h1{font-size:30px;line-height:1.15;margin:0 0 8px;letter-spacing:-.03em}.hero p{margin:0;color:var(--muted);max-width:760px;line-height:1.55}.badge{display:inline-flex;padding:8px 11px;border:1px solid var(--line);border-radius:999px;background:var(--card);font-size:12px;color:var(--muted);white-space:nowrap}
+.grid{display:grid;grid-template-columns:1.02fr .98fr;gap:20px}.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}.pad{padding:22px}h2{font-size:18px;margin:0 0 18px}h3{font-size:14px;margin:0 0 11px;color:var(--sub)}.section{padding-top:18px;margin-top:18px;border-top:1px solid var(--line)}.section:first-of-type{padding-top:0;margin-top:0;border-top:none}.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field-grid.three{grid-template-columns:repeat(3,1fr)}label{display:block;font-size:12px;font-weight:650;margin-bottom:7px;color:var(--label)}select,input{width:100%;height:42px;border:1px solid var(--field);border-radius:10px;background:var(--card);padding:0 12px;font-size:14px;color:var(--text);outline:none;font-variant-numeric:tabular-nums}select:focus,input:focus{border-color:var(--muted);box-shadow:0 0 0 3px var(--soft)}.hint{font-size:11px;color:var(--muted);margin-top:6px;line-height:1.4}.choice-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.choice{border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--card);cursor:pointer;transition:.15s;display:flex;flex-direction:column;gap:6px}.choice:hover{border-color:var(--muted)}.choice:focus-visible{outline:2px solid var(--accent);outline-offset:2px}.choice.active{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset;background:var(--soft)}.choice strong{display:block;font-size:13px;line-height:1.3}.choice span{font-size:11px;color:var(--muted);line-height:1.35;display:block}.choice .tag{display:inline-block;align-self:flex-start;font-size:9.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 7px;border-radius:999px;background:var(--ok-bg);color:var(--ok);line-height:1.2}.choice .tag.dev{background:var(--dev-bg);color:var(--dev)}.results{position:sticky;top:calc(18px + env(safe-area-inset-top,0px))}.metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}.metric{border:1px solid var(--line);border-radius:13px;padding:14px}.metric .k{font-size:11px;color:var(--muted);margin-bottom:6px}.metric .v{font-size:24px;font-weight:750;letter-spacing:-.03em}.metric .s{font-size:11px;color:var(--muted);margin-top:4px}.metric .v{font-variant-numeric:tabular-nums}.metric.hero-metric{grid-column:1/-1;background:var(--accent);color:var(--on-accent);border-color:var(--accent)}.metric.hero-metric .k,.metric.hero-metric .s{color:var(--accent-muted)}table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;color:var(--muted);font-weight:600;padding:9px 8px;border-bottom:1px solid var(--line)}td{padding:10px 8px;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}th:last-child,td:last-child{text-align:right}tr:last-child td{border-bottom:none}.note{margin-top:16px;padding:12px 13px;border-radius:11px;background:var(--soft);border:1px solid var(--line);font-size:11px;line-height:1.5;color:var(--muted)}.note strong{color:var(--text)}.note.warn{background:var(--warn-bg);border-color:var(--warn-line);color:var(--warn)}.note.warn strong{color:var(--warn)}details{border-top:1px solid var(--line);margin-top:18px;padding-top:16px}summary{cursor:pointer;font-weight:700;font-size:13px}.actions{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}button{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:10px;padding:10px 13px;font-size:12px;font-weight:650;cursor:pointer}button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}button.primary{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}.footer{margin-top:22px;color:var(--muted);font-size:10px;line-height:1.5}.pill{display:inline-block;padding:4px 7px;border-radius:999px;background:var(--pill);font-size:10px;color:var(--pill-text);margin-left:6px}.ref{font-size:11px}.ref td,.ref th{padding:6px 8px}@media(max-width:900px){.grid{grid-template-columns:1fr}.results{position:static}.field-grid,.field-grid.three,.choice-row{grid-template-columns:1fr}.hero{display:block}.badge{margin-top:12px}.wrap{padding-inline:16px}}@media print{body{background:#fff}.wrap{max-width:none;padding-block:0;padding-inline:0}.card{box-shadow:none}.no-print{display:none!important}.grid{grid-template-columns:1fr 1fr}.results{position:static}.hero{margin-bottom:14px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero"><div><h1>theFitted Brand Integration Estimator</h1><p>Interactive planning model for estimating one-off implementation effort and recurring operating costs by integration level, brand size, catalog scale and expected try-on volume. Infrastructure unit costs are calibrated on observed AWS billing (Jul–Aug 2026).</p></div><div class="badge">Planning estimate · v3 · Sep 2026</div></div>
+  <div class="grid">
+    <div class="card pad">
+      <h2>1. Brand & integration profile</h2>
+      <div class="section"><h3>Brand size <span class="pill">suggested from SKU count</span></h3><div class="choice-row" id="brandChoices">
+        <div class="choice" tabindex="0" role="button" data-brand="small"><strong>Small</strong><span>Under ~150 SKUs. Single storefront, low traffic. Lean onboarding.</span></div>
+        <div class="choice active" tabindex="0" role="button" data-brand="medium"><strong>Medium</strong><span>A few hundred SKUs (150–1,500). Established brand with meaningful catalog and usage.</span></div>
+        <div class="choice" tabindex="0" role="button" data-brand="large"><strong>Large retailer</strong><span>Thousands of SKUs (1,500+). Multi-market, higher traffic and operational complexity.</span></div>
+      </div><div class="hint" id="tierHint"></div></div>
+      <div class="section"><h3>Integration level</h3><div class="choice-row" id="integrationChoices">
+        <div class="choice active" tabindex="0" role="button" data-integration="shopify"><span class="tag">Available</span><strong>Level 1 · Shopify app</strong><span>Installs like any Shopify app, within Shopify's look and feel. Shopper opens theFitted separately. Fastest to launch.</span></div>
+        <div class="choice" tabindex="0" role="button" data-integration="widget"><span class="tag">Available</span><strong>Level 2 · Embedded widget</strong><span>Any website. Overlay or inline snippet, brand colour, font and button shape. Shopper stays on the product page.</span></div>
+        <div class="choice" tabindex="0" role="button" data-integration="api"><span class="tag dev">In development</span><strong>Level 3 · API-level</strong><span>Direct integration with full control over interface and placement. Largest build on the brand's side.</span></div>
+      </div></div>
+      <div class="section" id="securitySection"><div class="field-grid">
+        <div><label for="security">Security model <span class="pill">widget only</span></label><select id="security"><option value="quick" selected>Quick — origin-based, no brand setup</option><option value="verified">Verified — brand public key + signed token server</option></select><div class="hint">Quick: shopper recognised because the request comes from an approved brand origin. Verified: the brand's systems prove which shopper it is (logged-in flows, security reviews, regulated brands). Upgrading later does not require starting over.</div></div>
+        <div><label for="display">Display style <span class="pill">widget only</span></label><select id="display"><option value="overlay" selected>Overlay over the page</option><option value="inline">Inline within the layout</option></select><div class="hint">Switching later is a single attribute on the snippet — no cost impact.</div></div>
+      </div></div>
+      <div class="section"><div class="field-grid">
+        <div><label for="catalog">Catalog items / SKUs</label><input id="catalog" type="number" min="1" step="50" value="500"><div class="hint">Drives catalog ingestion, mapping and preprocessing effort. Also sets the suggested brand tier.</div></div>
+        <div><label for="tryons">Expected try-ons / month</label><input id="tryons" type="number" min="0" step="1000" value="30000"><div class="hint">Drives GPU inference capacity and variable infrastructure.</div></div>
+        <div><label for="markets">Markets / storefronts</label><input id="markets" type="number" min="1" max="50" value="1"></div>
+        <div><label for="customization">Experience customization</label><select id="customization"><option value="standard" selected>Standard (level defaults)</option><option value="custom">Brand colour, font & button shape</option><option value="bespoke">Bespoke UX / workflows</option></select><div class="hint">Level 1 offers no branding controls; Level 2 offers a fixed set; bespoke UX only makes sense at Level 3.</div></div>
+        <div><label for="analytics">Analytics depth</label><select id="analytics"><option value="basic" selected>Standard dashboard</option><option value="advanced">Advanced analytics</option><option value="enterprise">Custom / enterprise analytics</option></select></div>
+        <div><label for="dataComplexity">Data / API complexity</label><select id="dataComplexity"><option value="low">Low</option><option value="normal" selected>Normal</option><option value="high">High</option></select></div>
+      </div></div>
+      <details class="no-print"><summary>2. Model assumptions <span class="pill">editable</span></summary>
+        <div class="section"><h3>Team rates</h3><div class="field-grid three">
+          <div><label for="currency">Currency</label><select id="currency"><option value="USD" selected>USD ($)</option><option value="EUR">EUR (€)</option><option value="GBP">GBP (£)</option></select></div>
+          <div><label for="engineerRate">Engineer rate / hour</label><input id="engineerRate" type="number" min="0" value="50"></div>
+          <div><label for="leadRate">Tech Lead rate / hour</label><input id="leadRate" type="number" min="0" value="70"></div>
+          <div><label for="qaRate">QA rate / hour</label><input id="qaRate" type="number" min="0" value="45"></div>
+          <div><label for="designRate">Design rate / hour</label><input id="designRate" type="number" min="0" value="50"></div>
+          <div><label for="hoursPerDay">Hours / day</label><input id="hoursPerDay" type="number" min="1" max="12" step=".5" value="8"></div>
+        </div></div>
+        <div class="section"><h3>GPU inference (g4dn.xlarge, calibrated on AWS Aug 2026)</h3><div class="field-grid three">
+          <div><label for="gpuInstanceCost">GPU instance / month (24/7)</label><input id="gpuInstanceCost" type="number" min="0" step="1" value="384"><div class="hint">$390.95 for 743 h in Aug ≈ $0.526/h × 730 h.</div></div>
+          <div><label for="gpuCapacity">Capacity at full load (try-ons / instance / month)</label><input id="gpuCapacity" type="number" min="1000" step="5000" value="60000"><div class="hint">≈ 80 try-ons/hour sustained. Validate with load tests.</div></div>
+          <div><label for="minInstances">Always-on instances (availability floor)</label><input id="minInstances" type="number" min="1" max="20" value="2"><div class="hint">1 = pilot setup (single point of failure). 2 = production redundancy. Preset by tier.</div></div>
+          <div><label for="peakFactor">Peak-to-average traffic factor</label><input id="peakFactor" type="number" min="1" step=".5" value="3"><div class="hint">Shopping traffic peaks at evenings/weekends and campaigns; capacity must cover the peak, not the average.</div></div>
+          <div><label for="targetUtil">Target utilisation at peak (%)</label><input id="targetUtil" type="number" min="10" max="100" value="60"><div class="hint">Headroom for latency and instance failure.</div></div>
+          <div><label for="peakShare">Share of month peak instances run (%)</label><input id="peakShare" type="number" min="0" max="100" value="35"><div class="hint">Instances above the floor autoscale — they are only billed for peak hours.</div></div>
+        </div></div>
+        <div class="section"><h3>Other infrastructure</h3><div class="field-grid three">
+          <div><label for="platformBase">Platform base (observed) / month</label><input id="platformBase" type="number" min="0" step="1" value="63"><div class="hint">Non-GPU AWS in Aug: VPC $11.16, EBS/EC2-Other $43.27, ECR $6.58, S3 $1.33, CloudWatch $0.62.</div></div>
+          <div><label for="prodAddons">Production services not yet in the bill / month</label><input id="prodAddons" type="number" min="0" step="10" value="160"><div class="hint">Load balancer (~$25), managed database with backups (~$60–90), WAF/CDN, Route 53, Secrets Manager, log retention.</div></div>
+          <div><label for="stagingEnv">Staging & development environment / month</label><input id="stagingEnv" type="number" min="0" step="10" value="80"><div class="hint">Intermittent GPU use — July 2026 ($77.97) is the reference.</div></div>
+          <div><label for="variableInfraPer1k">Data transfer & storage / 1k try-ons</label><input id="variableInfraPer1k" type="number" min="0" step=".1" value="1.5"><div class="hint">Photo upload, result delivery (~5–10 GB egress per 1k try-ons), result storage, logs.</div></div>
+          <div><label for="tooling">Tooling & observability / month</label><input id="tooling" type="number" min="0" step="10" value="60"><div class="hint">Error tracking, uptime monitoring, CI minutes, alerting.</div></div>
+          <div><label for="infraContingency">Infrastructure contingency (%)</label><input id="infraContingency" type="number" min="0" max="100" value="10"><div class="hint">Bill drift and unplanned usage — Jul→Aug moved +482%.</div></div>
+          <div><label for="sharedBrands">Brands sharing the platform</label><input id="sharedBrands" type="number" min="1" max="100" value="1"><div class="hint">Base, add-ons, staging, tooling, always-on GPUs and platform operations are split; 1 attributes the full baseline to this brand.</div></div>
+          <div><label for="externalAiCost">External AI / API cost per try-on</label><input id="externalAiCost" type="number" min="0" step=".001" value="0"><div class="hint">Leave 0 while inference runs on own GPUs.</div></div>
+          <div><label for="licensing">Model & software licensing / month</label><input id="licensing" type="number" min="0" step="10" value="0"><div class="hint">Commercial licences for body-reconstruction or segmentation models, if applicable.</div></div>
+        </div></div>
+        <div class="section"><h3>Recurring team effort</h3><div class="field-grid three">
+          <div><label for="opsHours">Platform operations hrs / mo (shared)</label><input id="opsHours" type="number" min="0" value="12"><div class="hint">Monitoring, patching, dependency and model updates, on-call. Split across brands.</div></div>
+          <div><label for="supportHours">Brand support & optimisation hrs / mo</label><input id="supportHours" type="number" min="0" value="10"><div class="hint">Brand-specific: tickets, tuning, analytics reviews. Preset by tier.</div></div>
+          <div><label for="catalogChurn">New / changed SKUs per month (% of catalog)</label><input id="catalogChurn" type="number" min="0" max="100" value="8"><div class="hint">Drives ongoing preprocessing and catalog QA.</div></div>
+          <div><label for="refreshHoursPer100">Catalog QA hrs per 100 new SKUs</label><input id="refreshHoursPer100" type="number" min="0" step=".5" value="1"></div>
+          <div><label for="aiSkuCost">Preprocessing cost / SKU</label><input id="aiSkuCost" type="number" min="0" step=".001" value="0.020"><div class="hint">GPU time for garment/asset preprocessing.</div></div>
+          <div><label for="hypercareDays">Go-live & hypercare (days, one-off)</label><input id="hypercareDays" type="number" min="0" step=".5" value="2"><div class="hint">Launch monitoring, first-week fixes. Preset by tier.</div></div>
+        </div></div>
+        <div class="section"><h3>Implementation factors</h3><div class="field-grid three">
+          <div><label for="verifiedDays">Verified security setup (days)</label><input id="verifiedDays" type="number" min="0" step=".5" value="2"><div class="hint">Key exchange, token validation and testing with the brand's token server.</div></div>
+          <div><label for="qaPct">QA effort (% of engineering)</label><input id="qaPct" type="number" min="0" max="100" value="20"></div>
+          <div><label for="leadPct">Lead / coordination effort (%)</label><input id="leadPct" type="number" min="0" max="100" value="12"></div>
+          <div><label for="riskPct">Estimate range (+/- %)</label><input id="riskPct" type="number" min="0" max="100" value="15"></div>
+        </div></div>
+        <div class="section"><h3>Reference · observed AWS cost</h3><table class="ref"><thead><tr><th>Service</th><th>Jul 2026</th><th>Aug 2026</th><th>Driver</th></tr></thead><tbody>
+          <tr><td>EC2 Instances (g4dn.xlarge)</td><td>$25.91</td><td>$390.95</td><td>49 h → 743 h (24/7)</td></tr>
+          <tr><td>EC2 Other (EBS gp3)</td><td>$37.88</td><td>$43.27</td><td>7.6 → 75 GB-month</td></tr>
+          <tr><td>ECR</td><td>$1.68</td><td>$6.58</td><td>17 → 66 GB-month</td></tr>
+          <tr><td>VPC</td><td>$11.16</td><td>$11.16</td><td>fixed</td></tr>
+          <tr><td>S3 · CloudWatch · Tax</td><td>$1.33</td><td>$2.01</td><td>—</td></tr>
+          <tr><td><strong>Total</strong></td><td><strong>$77.97</strong></td><td><strong>$453.98</strong></td><td>+482%</td></tr>
+        </tbody></table></div>
+        <div class="note">August reflects one GPU instance running continuously for a single pilot with negligible traffic; July reflects intermittent development use. Production adds redundancy, peak capacity, a database, load balancing and a staging environment — none of which appear in the pilot bill yet, so the model adds them explicitly. GPU capacity remains the assumption to validate with load tests before quoting.</div>
+      </details>
+    </div>
+    <div class="card pad results">
+      <h2>Estimated commercial impact</h2>
+      <div class="metric-grid">
+        <div class="metric hero-metric"><div class="k">Estimated one-off implementation</div><div class="v" id="implementationCost">$0</div><div class="s" id="implementationRange">Estimated range: —</div></div>
+        <div class="metric"><div class="k">Implementation effort</div><div class="v" id="effortDays">0 d</div><div class="s" id="effortHours">0 hours</div></div>
+        <div class="metric"><div class="k">Recurring / month</div><div class="v" id="monthlyCost">$0</div><div class="s" id="monthlySub">Infrastructure + team</div></div>
+        <div class="metric"><div class="k">Year 1 estimated cost</div><div class="v" id="year1Cost">$0</div><div class="s">Implementation + 12 months operating</div></div>
+        <div class="metric"><div class="k">GPU inference / month</div><div class="v" id="gpuMonthly">$0</div><div class="s" id="gpuText">—</div></div>
+      </div>
+      <h3>Implementation breakdown</h3><table><thead><tr><th>Workstream</th><th>Effort</th><th>Estimate</th></tr></thead><tbody id="implBreakdown"></tbody></table>
+      <div class="section"><h3>Recurring monthly breakdown</h3><table><thead><tr><th>Cost area</th><th>Driver</th><th>Estimate</th></tr></thead><tbody id="monthlyBreakdown"></tbody></table></div>
+      <div class="note" id="summaryNote"></div>
+      <div class="note warn" id="apiNote" style="display:none"><strong>Level 3 is in development.</strong> Effort shown is indicative of the integration work once the API is available; it excludes the platform build itself and does not reflect a launch date.</div>
+      <div class="actions no-print"><button class="primary" onclick="copySummary()">Copy estimate summary</button><button onclick="window.print()">Print / Save PDF</button><button onclick="resetDefaults()">Reset</button></div>
+    </div>
+  </div>
+  <div class="footer">This estimator is intended for early-stage commercial planning and scoping. Final pricing should follow technical validation of the brand's systems, APIs, catalog quality, analytics requirements, security constraints, traffic profile and rollout plan. Infrastructure calibration: AWS Cost Explorer, Jul–Aug 2026, us-east-2.</div>
+</div>
+<script>
+const TIERS={small:{max:150},medium:{max:1500}};
+const presets={small:{catalog:80,tryons:5000,support:4,minInstances:1,hypercare:1,complexity:1},medium:{catalog:500,tryons:30000,support:10,minInstances:2,hypercare:2,complexity:1.25},large:{catalog:5000,tryons:200000,support:24,minInstances:2,hypercare:4,complexity:1.6}};
+const integration={
+  shopify:{label:'Level 1 · Shopify app',baseDays:3,analyticsDays:1,designDays:.5,marketDays:.5,catalogFactor:1},
+  widget:{label:'Level 2 · Embedded widget',baseDays:6,analyticsDays:2,designDays:1.5,marketDays:.75,catalogFactor:1},
+  api:{label:'Level 3 · API-level',baseDays:16,analyticsDays:5,designDays:2.5,marketDays:1.5,catalogFactor:1.2}
+};
+let currentBrand='medium',currentIntegration='shopify';const $=id=>document.getElementById(id),n=id=>parseFloat($(id).value||0);
+function tierFor(skus){return skus<TIERS.small.max?'small':skus<=TIERS.medium.max?'medium':'large'}
+function cap(s){return s[0].toUpperCase()+s.slice(1)}
+function money(v){const c=$('currency').value,locale=c==='EUR'?'en-IE':c==='GBP'?'en-GB':'en-US';return new Intl.NumberFormat(locale,{style:'currency',currency:c,maximumFractionDigits:0}).format(v)}
+function money3(v){const c=$('currency').value,locale=c==='EUR'?'en-IE':c==='GBP'?'en-GB':'en-US';return new Intl.NumberFormat(locale,{style:'currency',currency:c,minimumFractionDigits:2,maximumFractionDigits:3}).format(v)}
+function daysText(d){return d<1?`${(d*n('hoursPerDay')).toFixed(1)} h`:`${d.toFixed(1)} d`}
+function applyTierPresets(t){$('supportHours').value=presets[t].support;$('minInstances').value=presets[t].minInstances;$('hypercareDays').value=presets[t].hypercare}
+function calc(){
+  const b=presets[currentBrand],i=integration[currentIntegration],catalog=n('catalog'),tryons=n('tryons'),markets=Math.max(1,n('markets')),hpd=n('hoursPerDay'),engRate=n('engineerRate'),leadRate=n('leadRate'),qaRate=n('qaRate'),designRate=n('designRate');
+  const isWidget=currentIntegration==='widget';$('securitySection').style.display=isWidget?'':'none';$('apiNote').style.display=currentIntegration==='api'?'':'none';
+  const suggested=tierFor(catalog);$('tierHint').textContent=`${catalog.toLocaleString()} SKUs → suggested tier: ${cap(suggested)}${suggested!==currentBrand?` (currently ${cap(currentBrand)} — click to change)`:''}. Thresholds: <150 Small · 150–1,500 Medium · >1,500 Large.`;
+  // ---- One-off implementation
+  const complexityMap={low:.9,normal:1,high:1.3},customizationDays={standard:0,custom:1.5,bespoke:6},analyticsExtra={basic:0,advanced:2,enterprise:5};
+  const dataMult=complexityMap[$('dataComplexity').value],brandMult=b.complexity,cust=$('customization').value;
+  const coreDays=i.baseDays*brandMult*dataMult;
+  const catalogDays=(0.5+Math.log10(1+catalog)*0.8+catalog/4000)*Math.sqrt(brandMult)*dataMult*i.catalogFactor;
+  const customDays=(currentIntegration==='shopify'&&cust==='custom'?0:customizationDays[cust])*Math.sqrt(brandMult);
+  const analyticsDays=(i.analyticsDays+analyticsExtra[$('analytics').value])*dataMult;
+  const marketDays=(markets-1)*i.marketDays;
+  const securityDays=isWidget&&$('security').value==='verified'?n('verifiedDays'):0;
+  const hypercareDays=n('hypercareDays');
+  const designDays=i.designDays+(cust==='bespoke'?2:cust==='custom'&&currentIntegration!=='shopify'?.5:0);
+  const engineeringDays=coreDays+catalogDays+customDays+analyticsDays+marketDays+securityDays;
+  const qaDays=engineeringDays*(n('qaPct')/100);const leadDays=(engineeringDays+qaDays+hypercareDays)*(n('leadPct')/100);const totalDays=engineeringDays+qaDays+leadDays+designDays+hypercareDays;
+  const coreCost=coreDays*hpd*engRate;const catalogCost=catalogDays*hpd*engRate+catalog*n('aiSkuCost');const customAnalyticsCost=(customDays+analyticsDays+marketDays)*hpd*engRate;const securityCost=securityDays*hpd*engRate;const hypercareCost=hypercareDays*hpd*engRate;const qaCost=qaDays*hpd*qaRate;const leadCost=leadDays*hpd*leadRate;const designCost=designDays*hpd*designRate;
+  const implementationCost=coreCost+catalogCost+customAnalyticsCost+securityCost+hypercareCost+qaCost+leadCost+designCost;
+  // ---- Recurring
+  const shared=Math.max(1,n('sharedBrands')),gpuCost=n('gpuInstanceCost'),capacity=Math.max(1,n('gpuCapacity'));
+  const floor=Math.max(1,Math.round(n('minInstances')));
+  const needed=Math.max(1,Math.ceil(tryons*Math.max(1,n('peakFactor'))/(capacity*Math.max(.1,n('targetUtil'))/100)));
+  const extra=Math.max(0,needed-floor);
+  const gpuFloorCost=floor*gpuCost/shared,gpuPeakCost=extra*gpuCost*(n('peakShare')/100),gpuAllocated=gpuFloorCost+gpuPeakCost;
+  const baseShare=n('platformBase')/shared,addonsShare=n('prodAddons')/shared,stagingShare=n('stagingEnv')/shared,toolingShare=n('tooling')/shared;
+  const variableInfra=(tryons/1000)*n('variableInfraPer1k');
+  const externalAi=tryons*n('externalAiCost'),licensing=n('licensing');
+  const infraSubtotal=baseShare+addonsShare+stagingShare+gpuAllocated+variableInfra+toolingShare+externalAi+licensing;
+  const contingency=infraSubtotal*(n('infraContingency')/100);
+  const newSkus=catalog*n('catalogChurn')/100;
+  const refreshHours=newSkus/100*n('refreshHoursPer100');
+  const catalogRefresh=newSkus*n('aiSkuCost')+refreshHours*engRate;
+  const opsHours=n('opsHours')/shared,opsCost=opsHours*engRate;
+  const supportHours=n('supportHours'),supportCost=supportHours*engRate;
+  const monthly=infraSubtotal+contingency+catalogRefresh+opsCost+supportCost,year1=implementationCost+monthly*12,risk=n('riskPct')/100;
+  const perTryon=tryons>0?monthly/tryons:0;
+  // ---- Render
+  $('implementationCost').textContent=money(implementationCost);$('implementationRange').textContent=`Estimated range: ${money(implementationCost*(1-risk))} – ${money(implementationCost*(1+risk))}`;$('effortDays').textContent=`${totalDays.toFixed(1)} d`;$('effortHours').textContent=`${Math.round(totalDays*hpd)} total hours`;$('monthlyCost').textContent=money(monthly);$('monthlySub').textContent=`≈ ${money3(perTryon)} per try-on · infra ${money(infraSubtotal+contingency)} + team ${money(catalogRefresh+opsCost+supportCost)}`;$('year1Cost').textContent=money(year1);$('gpuMonthly').textContent=money(gpuAllocated);
+  $('gpuText').textContent=`${floor} always-on${extra>0?` + ${extra} at peak`:''} · ${needed} needed for ${tryons.toLocaleString()} try-ons${shared>1?` · floor shared by ${shared} brands`:''}`;
+  const rows=[['Core integration',daysText(coreDays),coreCost],['Catalog onboarding & preprocessing',daysText(catalogDays),catalogCost],['Customization, analytics & markets',daysText(customDays+analyticsDays+marketDays),customAnalyticsCost]];
+  if(securityDays>0)rows.push(['Verified security setup',daysText(securityDays),securityCost]);
+  rows.push(['Design / experience configuration',daysText(designDays),designCost],['QA / UAT',daysText(qaDays),qaCost],['Go-live & hypercare',daysText(hypercareDays),hypercareCost],['Technical lead / coordination',daysText(leadDays),leadCost]);
+  $('implBreakdown').innerHTML=rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${money(r[2])}</td></tr>`).join('');
+  const sh=shared>1?` (1/${shared})`:'';
+  const mrows=[
+    ['GPU inference — always-on floor',`${floor} × g4dn.xlarge${sh}`,gpuFloorCost],
+    ['GPU inference — peak autoscaling',extra>0?`${extra} × g4dn.xlarge, ${n('peakShare')}% of month`:'within floor capacity',gpuPeakCost],
+    ['Platform base (VPC, storage, registry, logs)',`observed${sh}`,baseShare],
+    ['Production services (LB, database, WAF/CDN, DNS, secrets)',`not yet in bill${sh}`,addonsShare],
+    ['Staging & development environment',`July reference${sh}`,stagingShare],
+    ['Data transfer & storage',`${tryons.toLocaleString()} try-ons`,variableInfra],
+    ['Tooling & observability',`shared${sh}`,toolingShare]];
+  if(externalAi>0)mrows.push(['External AI / API usage',`${tryons.toLocaleString()} try-ons`,externalAi]);
+  if(licensing>0)mrows.push(['Model & software licensing','fixed',licensing]);
+  mrows.push(['Infrastructure contingency',`${n('infraContingency')}% of infra`,contingency],
+    ['Catalog refresh (preprocessing + QA)',`${Math.round(newSkus).toLocaleString()} new SKUs · ${refreshHours.toFixed(1)} h`,catalogRefresh],
+    ['Platform operations (monitoring, patching, on-call)',`${opsHours.toFixed(1)} h${sh}`,opsCost],
+    ['Brand support & optimisation',`${supportHours} h`,supportCost]);
+  $('monthlyBreakdown').innerHTML=mrows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${money(r[2])}</td></tr>`).join('')+`<tr><td><strong>Total recurring / month</strong></td><td></td><td><strong>${money(monthly)}</strong></td></tr>`;
+  const secText=isWidget?`, ${$('security').value==='verified'?'Verified':'Quick'} security, ${$('display').value} display`:'';
+  $('summaryNote').innerHTML=`<strong>${i.label} · ${cap(currentBrand)} brand.</strong> This scenario assumes ${catalog.toLocaleString()} catalog items, ${tryons.toLocaleString()} monthly try-ons, ${markets} market${markets>1?'s':''}${secText}, ${$('analytics').options[$('analytics').selectedIndex].text.toLowerCase()} and ${$('dataComplexity').value} data/API complexity. Recurring cost assumes ${floor} always-on GPU instance${floor>1?'s':''} for availability, peak traffic ${n('peakFactor')}× average, and production services beyond the current pilot bill.`;
+}
+function setBrandUI(brand){currentBrand=brand;document.querySelectorAll('#brandChoices .choice').forEach(x=>x.classList.toggle('active',x.dataset.brand===brand))}
+function chooseBrand(brand,applyPreset=true){setBrandUI(brand);if(applyPreset){$('catalog').value=presets[brand].catalog;$('tryons').value=presets[brand].tryons;applyTierPresets(brand)}calc()}
+function chooseIntegration(v){currentIntegration=v;document.querySelectorAll('#integrationChoices .choice').forEach(x=>x.classList.toggle('active',x.dataset.integration===v));calc()}
+document.querySelectorAll('#brandChoices .choice').forEach(x=>{x.addEventListener('click',()=>chooseBrand(x.dataset.brand));x.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();chooseBrand(x.dataset.brand)}})});
+document.querySelectorAll('#integrationChoices .choice').forEach(x=>{x.addEventListener('click',()=>chooseIntegration(x.dataset.integration));x.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();chooseIntegration(x.dataset.integration)}})});
+document.querySelectorAll('input,select').forEach(x=>x.addEventListener('input',calc));
+$('catalog').addEventListener('input',()=>{const t=tierFor(n('catalog'));if(t!==currentBrand){setBrandUI(t);applyTierPresets(t);calc()}});
+function copySummary(){const isWidget=currentIntegration==='widget';const text=`theFitted Brand Integration Estimate\nBrand size: ${cap(currentBrand)}\nIntegration: ${integration[currentIntegration].label}${isWidget?` (${$('security').value==='verified'?'Verified':'Quick'} security, ${$('display').value})`:''}\nCatalog: ${Number($('catalog').value).toLocaleString()} items\nExpected try-ons/month: ${Number($('tryons').value).toLocaleString()}\n\nOne-off implementation: ${$('implementationCost').textContent}\n${$('implementationRange').textContent}\nEstimated effort: ${$('effortDays').textContent} / ${$('effortHours').textContent}\nRecurring monthly cost: ${$('monthlyCost').textContent}\n  ${$('monthlySub').textContent}\n  GPU inference: ${$('gpuMonthly').textContent} (${$('gpuText').textContent})\nEstimated Year 1 cost: ${$('year1Cost').textContent}\n\nPlanning estimate only; infra calibrated on AWS Jul–Aug 2026; final pricing subject to technical validation.`;navigator.clipboard.writeText(text).then(()=>{const btn=[...document.querySelectorAll('button')].find(b=>b.textContent.includes('Copy estimate'));const old=btn.textContent;btn.textContent='Copied';setTimeout(()=>btn.textContent=old,1200)})}
+function resetDefaults(){const d={engineerRate:50,leadRate:70,qaRate:45,designRate:50,hoursPerDay:8,gpuInstanceCost:384,gpuCapacity:60000,peakFactor:3,targetUtil:60,peakShare:35,platformBase:63,prodAddons:160,stagingEnv:80,variableInfraPer1k:1.5,tooling:60,infraContingency:10,sharedBrands:1,externalAiCost:0,licensing:0,opsHours:12,catalogChurn:8,refreshHoursPer100:1,aiSkuCost:.020,verifiedDays:2,qaPct:20,leadPct:12,riskPct:15,markets:1};for(const k in d)$(k).value=d[k];$('currency').value='USD';$('customization').value='standard';$('analytics').value='basic';$('dataComplexity').value='normal';$('security').value='quick';$('display').value='overlay';chooseIntegration('shopify');chooseBrand('medium')}
+calc();
+</script>
+</body>
+</html>
