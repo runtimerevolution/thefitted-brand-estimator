@@ -15,7 +15,7 @@
 </head>
 <body>
 <div class="wrap">
-  <div class="hero"><div><h1>theFitted Brand Integration Estimator</h1><p>Interactive planning model for estimating one-off implementation effort and recurring operating costs by integration level, brand size, catalog scale and expected try-on volume. Infrastructure unit costs are calibrated on observed AWS billing (Jul–Aug 2026).</p></div><div class="badge">Planning estimate · v3 · Sep 2026</div></div>
+  <div class="hero"><div><h1>theFitted Brand Integration Estimator</h1><p>Interactive planning model for estimating one-off implementation effort and recurring operating costs by integration level, brand size, catalog scale and expected try-on volume.</p></div><div class="badge">Planning estimate · Sep 2026</div></div>
   <div class="grid">
     <div class="card pad">
       <h2>1. Brand & integration profile</h2>
@@ -39,60 +39,10 @@
         <div><label for="markets">Markets / storefronts</label><input id="markets" type="number" min="1" max="50" value="1"></div>
         <div><label for="customization">Experience customization</label><select id="customization"><option value="standard" selected>Standard (level defaults)</option><option value="custom">Brand colour, font & button shape</option><option value="bespoke">Bespoke UX / workflows</option></select><div class="hint">Level 1 offers no branding controls; Level 2 offers a fixed set; bespoke UX only makes sense at Level 3.</div></div>
         <div><label for="analytics">Analytics depth</label><select id="analytics"><option value="basic" selected>Standard dashboard</option><option value="advanced">Advanced analytics</option><option value="enterprise">Custom / enterprise analytics</option></select></div>
+        <div><label for="currency">Currency</label><select id="currency"><option value="USD" selected>USD ($)</option><option value="EUR">EUR (€)</option><option value="GBP">GBP (£)</option></select></div>
         <div><label for="dataComplexity">Data / API complexity</label><select id="dataComplexity"><option value="low">Low</option><option value="normal" selected>Normal</option><option value="high">High</option></select></div>
       </div></div>
-      <details class="no-print"><summary>2. Model assumptions <span class="pill">editable</span></summary>
-        <div class="section"><h3>Team rates</h3><div class="field-grid three">
-          <div><label for="currency">Currency</label><select id="currency"><option value="USD" selected>USD ($)</option><option value="EUR">EUR (€)</option><option value="GBP">GBP (£)</option></select></div>
-          <div><label for="engineerRate">Engineer rate / hour</label><input id="engineerRate" type="number" min="0" value="50"></div>
-          <div><label for="leadRate">Tech Lead rate / hour</label><input id="leadRate" type="number" min="0" value="70"></div>
-          <div><label for="qaRate">QA rate / hour</label><input id="qaRate" type="number" min="0" value="45"></div>
-          <div><label for="designRate">Design rate / hour</label><input id="designRate" type="number" min="0" value="50"></div>
-          <div><label for="hoursPerDay">Hours / day</label><input id="hoursPerDay" type="number" min="1" max="12" step=".5" value="8"></div>
-        </div></div>
-        <div class="section"><h3>GPU inference (g4dn.xlarge, calibrated on AWS Aug 2026)</h3><div class="field-grid three">
-          <div><label for="gpuInstanceCost">GPU instance / month (24/7)</label><input id="gpuInstanceCost" type="number" min="0" step="1" value="384"><div class="hint">$390.95 for 743 h in Aug ≈ $0.526/h × 730 h.</div></div>
-          <div><label for="gpuCapacity">Capacity at full load (try-ons / instance / month)</label><input id="gpuCapacity" type="number" min="1000" step="5000" value="60000"><div class="hint">≈ 80 try-ons/hour sustained. Validate with load tests.</div></div>
-          <div><label for="minInstances">Always-on instances (availability floor)</label><input id="minInstances" type="number" min="1" max="20" value="2"><div class="hint">1 = pilot setup (single point of failure). 2 = production redundancy. Preset by tier.</div></div>
-          <div><label for="peakFactor">Peak-to-average traffic factor</label><input id="peakFactor" type="number" min="1" step=".5" value="3"><div class="hint">Shopping traffic peaks at evenings/weekends and campaigns; capacity must cover the peak, not the average.</div></div>
-          <div><label for="targetUtil">Target utilisation at peak (%)</label><input id="targetUtil" type="number" min="10" max="100" value="60"><div class="hint">Headroom for latency and instance failure.</div></div>
-          <div><label for="peakShare">Share of month peak instances run (%)</label><input id="peakShare" type="number" min="0" max="100" value="35"><div class="hint">Instances above the floor autoscale — they are only billed for peak hours.</div></div>
-        </div></div>
-        <div class="section"><h3>Other infrastructure</h3><div class="field-grid three">
-          <div><label for="platformBase">Platform base (observed) / month</label><input id="platformBase" type="number" min="0" step="1" value="63"><div class="hint">Non-GPU AWS in Aug: VPC $11.16, EBS/EC2-Other $43.27, ECR $6.58, S3 $1.33, CloudWatch $0.62.</div></div>
-          <div><label for="prodAddons">Production services not yet in the bill / month</label><input id="prodAddons" type="number" min="0" step="10" value="160"><div class="hint">Load balancer (~$25), managed database with backups (~$60–90), WAF/CDN, Route 53, Secrets Manager, log retention.</div></div>
-          <div><label for="stagingEnv">Staging & development environment / month</label><input id="stagingEnv" type="number" min="0" step="10" value="80"><div class="hint">Intermittent GPU use — July 2026 ($77.97) is the reference.</div></div>
-          <div><label for="variableInfraPer1k">Data transfer & storage / 1k try-ons</label><input id="variableInfraPer1k" type="number" min="0" step=".1" value="1.5"><div class="hint">Photo upload, result delivery (~5–10 GB egress per 1k try-ons), result storage, logs.</div></div>
-          <div><label for="tooling">Tooling & observability / month</label><input id="tooling" type="number" min="0" step="10" value="60"><div class="hint">Error tracking, uptime monitoring, CI minutes, alerting.</div></div>
-          <div><label for="infraContingency">Infrastructure contingency (%)</label><input id="infraContingency" type="number" min="0" max="100" value="10"><div class="hint">Bill drift and unplanned usage — Jul→Aug moved +482%.</div></div>
-          <div><label for="sharedBrands">Brands sharing the platform</label><input id="sharedBrands" type="number" min="1" max="100" value="1"><div class="hint">Base, add-ons, staging, tooling, always-on GPUs and platform operations are split; 1 attributes the full baseline to this brand.</div></div>
-          <div><label for="externalAiCost">External AI / API cost per try-on</label><input id="externalAiCost" type="number" min="0" step=".001" value="0"><div class="hint">Leave 0 while inference runs on own GPUs.</div></div>
-          <div><label for="licensing">Model & software licensing / month</label><input id="licensing" type="number" min="0" step="10" value="0"><div class="hint">Commercial licences for body-reconstruction or segmentation models, if applicable.</div></div>
-        </div></div>
-        <div class="section"><h3>Recurring team effort</h3><div class="field-grid three">
-          <div><label for="opsHours">Platform operations hrs / mo (shared)</label><input id="opsHours" type="number" min="0" value="12"><div class="hint">Monitoring, patching, dependency and model updates, on-call. Split across brands.</div></div>
-          <div><label for="supportHours">Brand support & optimisation hrs / mo</label><input id="supportHours" type="number" min="0" value="10"><div class="hint">Brand-specific: tickets, tuning, analytics reviews. Preset by tier.</div></div>
-          <div><label for="catalogChurn">New / changed SKUs per month (% of catalog)</label><input id="catalogChurn" type="number" min="0" max="100" value="8"><div class="hint">Drives ongoing preprocessing and catalog QA.</div></div>
-          <div><label for="refreshHoursPer100">Catalog QA hrs per 100 new SKUs</label><input id="refreshHoursPer100" type="number" min="0" step=".5" value="1"></div>
-          <div><label for="aiSkuCost">Preprocessing cost / SKU</label><input id="aiSkuCost" type="number" min="0" step=".001" value="0.020"><div class="hint">GPU time for garment/asset preprocessing.</div></div>
-          <div><label for="hypercareDays">Go-live & hypercare (days, one-off)</label><input id="hypercareDays" type="number" min="0" step=".5" value="2"><div class="hint">Launch monitoring, first-week fixes. Preset by tier.</div></div>
-        </div></div>
-        <div class="section"><h3>Implementation factors</h3><div class="field-grid three">
-          <div><label for="verifiedDays">Verified security setup (days)</label><input id="verifiedDays" type="number" min="0" step=".5" value="2"><div class="hint">Key exchange, token validation and testing with the brand's token server.</div></div>
-          <div><label for="qaPct">QA effort (% of engineering)</label><input id="qaPct" type="number" min="0" max="100" value="20"></div>
-          <div><label for="leadPct">Lead / coordination effort (%)</label><input id="leadPct" type="number" min="0" max="100" value="12"></div>
-          <div><label for="riskPct">Estimate range (+/- %)</label><input id="riskPct" type="number" min="0" max="100" value="15"></div>
-        </div></div>
-        <div class="section"><h3>Reference · observed AWS cost</h3><table class="ref"><thead><tr><th>Service</th><th>Jul 2026</th><th>Aug 2026</th><th>Driver</th></tr></thead><tbody>
-          <tr><td>EC2 Instances (g4dn.xlarge)</td><td>$25.91</td><td>$390.95</td><td>49 h → 743 h (24/7)</td></tr>
-          <tr><td>EC2 Other (EBS gp3)</td><td>$37.88</td><td>$43.27</td><td>7.6 → 75 GB-month</td></tr>
-          <tr><td>ECR</td><td>$1.68</td><td>$6.58</td><td>17 → 66 GB-month</td></tr>
-          <tr><td>VPC</td><td>$11.16</td><td>$11.16</td><td>fixed</td></tr>
-          <tr><td>S3 · CloudWatch · Tax</td><td>$1.33</td><td>$2.01</td><td>—</td></tr>
-          <tr><td><strong>Total</strong></td><td><strong>$77.97</strong></td><td><strong>$453.98</strong></td><td>+482%</td></tr>
-        </tbody></table></div>
-        <div class="note">August reflects one GPU instance running continuously for a single pilot with negligible traffic; July reflects intermittent development use. Production adds redundancy, peak capacity, a database, load balancing and a staging environment — none of which appear in the pilot bill yet, so the model adds them explicitly. GPU capacity remains the assumption to validate with load tests before quoting.</div>
-      </details>
+      <div hidden><input id="engineerRate" type="number" value="50"><input id="leadRate" type="number" value="70"><input id="qaRate" type="number" value="45"><input id="designRate" type="number" value="50"><input id="hoursPerDay" type="number" value="8"><input id="gpuInstanceCost" type="number" value="384"><input id="gpuCapacity" type="number" value="60000"><input id="minInstances" type="number" value="2"><input id="peakFactor" type="number" value="3"><input id="targetUtil" type="number" value="60"><input id="peakShare" type="number" value="35"><input id="platformBase" type="number" value="63"><input id="prodAddons" type="number" value="160"><input id="stagingEnv" type="number" value="80"><input id="variableInfraPer1k" type="number" value="1.5"><input id="tooling" type="number" value="60"><input id="infraContingency" type="number" value="10"><input id="sharedBrands" type="number" value="1"><input id="externalAiCost" type="number" value="0"><input id="licensing" type="number" value="0"><input id="opsHours" type="number" value="12"><input id="supportHours" type="number" value="10"><input id="catalogChurn" type="number" value="8"><input id="refreshHoursPer100" type="number" value="1"><input id="aiSkuCost" type="number" value="0.02"><input id="hypercareDays" type="number" value="2"><input id="verifiedDays" type="number" value="2"><input id="qaPct" type="number" value="20"><input id="leadPct" type="number" value="12"><input id="riskPct" type="number" value="15"></div>
     </div>
     <div class="card pad results">
       <h2>Estimated commercial impact</h2>
@@ -110,7 +60,7 @@
       <div class="actions no-print"><button class="primary" onclick="copySummary()">Copy estimate summary</button><button onclick="window.print()">Print / Save PDF</button><button onclick="resetDefaults()">Reset</button></div>
     </div>
   </div>
-  <div class="footer">This estimator is intended for early-stage commercial planning and scoping. Final pricing should follow technical validation of the brand's systems, APIs, catalog quality, analytics requirements, security constraints, traffic profile and rollout plan. Infrastructure calibration: AWS Cost Explorer, Jul–Aug 2026, us-east-2.</div>
+  <div class="footer">This estimator is intended for early-stage commercial planning and scoping. Final pricing should follow technical validation of the brand's systems, APIs, catalog quality, analytics requirements, security constraints, traffic profile and rollout plan.</div>
 </div>
 <script>
 const TIERS={small:{max:150},medium:{max:1500}};
@@ -173,11 +123,11 @@ function calc(){
   $('implBreakdown').innerHTML=rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${money(r[2])}</td></tr>`).join('');
   const sh=shared>1?` (1/${shared})`:'';
   const mrows=[
-    ['GPU inference — always-on floor',`${floor} × g4dn.xlarge${sh}`,gpuFloorCost],
-    ['GPU inference — peak autoscaling',extra>0?`${extra} × g4dn.xlarge, ${n('peakShare')}% of month`:'within floor capacity',gpuPeakCost],
-    ['Platform base (VPC, storage, registry, logs)',`observed${sh}`,baseShare],
-    ['Production services (LB, database, WAF/CDN, DNS, secrets)',`not yet in bill${sh}`,addonsShare],
-    ['Staging & development environment',`July reference${sh}`,stagingShare],
+    ['GPU inference — always-on floor',`${floor} GPU instance${floor>1?'s':''}${sh}`,gpuFloorCost],
+    ['GPU inference — peak autoscaling',extra>0?`${extra} GPU instance${extra>1?'s':''}, ${n('peakShare')}% of month`:'within floor capacity',gpuPeakCost],
+    ['Platform base (networking, storage, registry, logs)',`fixed${sh}`,baseShare],
+    ['Production services (load balancing, database, WAF/CDN, DNS, secrets)',`fixed${sh}`,addonsShare],
+    ['Staging & development environment',`fixed${sh}`,stagingShare],
     ['Data transfer & storage',`${tryons.toLocaleString()} try-ons`,variableInfra],
     ['Tooling & observability',`shared${sh}`,toolingShare]];
   if(externalAi>0)mrows.push(['External AI / API usage',`${tryons.toLocaleString()} try-ons`,externalAi]);
@@ -188,7 +138,7 @@ function calc(){
     ['Brand support & optimisation',`${supportHours} h`,supportCost]);
   $('monthlyBreakdown').innerHTML=mrows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${money(r[2])}</td></tr>`).join('')+`<tr><td><strong>Total recurring / month</strong></td><td></td><td><strong>${money(monthly)}</strong></td></tr>`;
   const secText=isWidget?`, ${$('security').value==='verified'?'Verified':'Quick'} security, ${$('display').value} display`:'';
-  $('summaryNote').innerHTML=`<strong>${i.label} · ${cap(currentBrand)} brand.</strong> This scenario assumes ${catalog.toLocaleString()} catalog items, ${tryons.toLocaleString()} monthly try-ons, ${markets} market${markets>1?'s':''}${secText}, ${$('analytics').options[$('analytics').selectedIndex].text.toLowerCase()} and ${$('dataComplexity').value} data/API complexity. Recurring cost assumes ${floor} always-on GPU instance${floor>1?'s':''} for availability, peak traffic ${n('peakFactor')}× average, and production services beyond the current pilot bill.`;
+  $('summaryNote').innerHTML=`<strong>${i.label} · ${cap(currentBrand)} brand.</strong> This scenario assumes ${catalog.toLocaleString()} catalog items, ${tryons.toLocaleString()} monthly try-ons, ${markets} market${markets>1?'s':''}${secText}, ${$('analytics').options[$('analytics').selectedIndex].text.toLowerCase()} and ${$('dataComplexity').value} data/API complexity. Recurring cost assumes ${floor} always-on GPU instance${floor>1?'s':''} for availability, peak traffic ${n('peakFactor')}× average, and production-grade services (redundancy, database, load balancing, staging).`;
 }
 function setBrandUI(brand){currentBrand=brand;document.querySelectorAll('#brandChoices .choice').forEach(x=>x.classList.toggle('active',x.dataset.brand===brand))}
 function chooseBrand(brand,applyPreset=true){setBrandUI(brand);if(applyPreset){$('catalog').value=presets[brand].catalog;$('tryons').value=presets[brand].tryons;applyTierPresets(brand)}calc()}
@@ -197,7 +147,7 @@ document.querySelectorAll('#brandChoices .choice').forEach(x=>{x.addEventListene
 document.querySelectorAll('#integrationChoices .choice').forEach(x=>{x.addEventListener('click',()=>chooseIntegration(x.dataset.integration));x.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();chooseIntegration(x.dataset.integration)}})});
 document.querySelectorAll('input,select').forEach(x=>x.addEventListener('input',calc));
 $('catalog').addEventListener('input',()=>{const t=tierFor(n('catalog'));if(t!==currentBrand){setBrandUI(t);applyTierPresets(t);calc()}});
-function copySummary(){const isWidget=currentIntegration==='widget';const text=`theFitted Brand Integration Estimate\nBrand size: ${cap(currentBrand)}\nIntegration: ${integration[currentIntegration].label}${isWidget?` (${$('security').value==='verified'?'Verified':'Quick'} security, ${$('display').value})`:''}\nCatalog: ${Number($('catalog').value).toLocaleString()} items\nExpected try-ons/month: ${Number($('tryons').value).toLocaleString()}\n\nOne-off implementation: ${$('implementationCost').textContent}\n${$('implementationRange').textContent}\nEstimated effort: ${$('effortDays').textContent} / ${$('effortHours').textContent}\nRecurring monthly cost: ${$('monthlyCost').textContent}\n  ${$('monthlySub').textContent}\n  GPU inference: ${$('gpuMonthly').textContent} (${$('gpuText').textContent})\nEstimated Year 1 cost: ${$('year1Cost').textContent}\n\nPlanning estimate only; infra calibrated on AWS Jul–Aug 2026; final pricing subject to technical validation.`;navigator.clipboard.writeText(text).then(()=>{const btn=[...document.querySelectorAll('button')].find(b=>b.textContent.includes('Copy estimate'));const old=btn.textContent;btn.textContent='Copied';setTimeout(()=>btn.textContent=old,1200)})}
+function copySummary(){const isWidget=currentIntegration==='widget';const text=`theFitted Brand Integration Estimate\nBrand size: ${cap(currentBrand)}\nIntegration: ${integration[currentIntegration].label}${isWidget?` (${$('security').value==='verified'?'Verified':'Quick'} security, ${$('display').value})`:''}\nCatalog: ${Number($('catalog').value).toLocaleString()} items\nExpected try-ons/month: ${Number($('tryons').value).toLocaleString()}\n\nOne-off implementation: ${$('implementationCost').textContent}\n${$('implementationRange').textContent}\nEstimated effort: ${$('effortDays').textContent} / ${$('effortHours').textContent}\nRecurring monthly cost: ${$('monthlyCost').textContent}\n  ${$('monthlySub').textContent}\n  GPU inference: ${$('gpuMonthly').textContent} (${$('gpuText').textContent})\nEstimated Year 1 cost: ${$('year1Cost').textContent}\n\nPlanning estimate only; final pricing subject to technical validation.`;navigator.clipboard.writeText(text).then(()=>{const btn=[...document.querySelectorAll('button')].find(b=>b.textContent.includes('Copy estimate'));const old=btn.textContent;btn.textContent='Copied';setTimeout(()=>btn.textContent=old,1200)})}
 function resetDefaults(){const d={engineerRate:50,leadRate:70,qaRate:45,designRate:50,hoursPerDay:8,gpuInstanceCost:384,gpuCapacity:60000,peakFactor:3,targetUtil:60,peakShare:35,platformBase:63,prodAddons:160,stagingEnv:80,variableInfraPer1k:1.5,tooling:60,infraContingency:10,sharedBrands:1,externalAiCost:0,licensing:0,opsHours:12,catalogChurn:8,refreshHoursPer100:1,aiSkuCost:.020,verifiedDays:2,qaPct:20,leadPct:12,riskPct:15,markets:1};for(const k in d)$(k).value=d[k];$('currency').value='USD';$('customization').value='standard';$('analytics').value='basic';$('dataComplexity').value='normal';$('security').value='quick';$('display').value='overlay';chooseIntegration('shopify');chooseBrand('medium')}
 calc();
 </script>
